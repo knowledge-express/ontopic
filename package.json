@@ -1,0 +1,59 @@
+{
+  "name": "ontopic",
+  "version": "0.0.0",
+  "description": "Semantic data over time and space 📑⏰🚀",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prestart": "npm run build",
+    "start": "node dist",
+    "pretest": "npm run clean && tsc --inlineSourceMap --outDir dist",
+    "test": "nyc ava --verbose",
+    "posttest": "npm run clean && npm run build",
+    "watch-test": "nodemon -w test -x 'npm run test'",
+    "coverage": "codecov",
+    "watch": "nodemon dist"
+  },
+  "nyc": {},
+  "ava": {
+    "files": [
+      "test/**/*.js"
+    ],
+    "source": [
+      "src/**/*.ts"
+    ],
+    "match": [],
+    "concurrency": 5,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "tap": false,
+    "powerAssert": false,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "author": "Steffan Sluis <steffansluis@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^9.4.5",
+    "typescript": "^2.7.1"
+  },
+  "devDependencies": {
+    "ava": "^0.20.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "codecov": "^1.0.1",
+    "nodemon": "^1.11.0",
+    "nyc": "^11.1.0"
+  },
+  "engines": {
+    "node": ">= 8",
+    "npm": ">= 5"
+  },
+  "repository": "git@github.com:knowledge-express/ontopic.git"
+}
