@@ -1,20 +1,13 @@
 import Config from './config';
 import Bus from './bus';
 import Store from './store';
-export declare type ontopic = {
-    config: Config;
-    store: () => void;
-    bus: () => void;
-    graphql: () => void;
-    start: () => void;
+export declare type ontopic<V> = {
+    bus: Bus<V>;
+    store: Store<V>;
 };
-export declare function ontopic(config?: Config): ontopic;
+export declare function ontopic<V>(config?: Config<V>): ontopic<V>;
 export declare module ontopic {
-    function create(config: Config): ontopic;
-    function bus(ontop: ontopic, bus: Bus): ontopic;
-    function store(ontop: ontopic, store: Store): ontopic;
-    function graphql(ontop: ontopic): ontopic;
-    function start(ontop: ontopic): void;
+    function create<V>(config: Config<V>): ontopic<V>;
 }
 export default ontopic;
 export * from './config';

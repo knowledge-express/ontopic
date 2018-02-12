@@ -5,15 +5,17 @@ import Ontology from './ontology';
 import Bus from './bus';
 import Store from './store';
 
-export type ontopic = {
-  config: Config;
-  store: () => void;
-  bus: () => void;
-  graphql: () => void;
-  start: () => void;
+export type ontopic<V> = {
+  bus: Bus<V>
+  store: Store<V>
+  // config: Config;
+  // store: () => void;
+  // bus: () => void;
+  // graphql: () => void;
+  // start: () => void;
 };
 
-export function ontopic(config: Config = Config.Default) {
+export function ontopic<V>(config: Config<V> = <Config<V>><any>Config.Default): ontopic<V> {
   // Initialise the system here with an ontology
 
   // Return something that can be configured declaritvely like express.
@@ -24,45 +26,38 @@ export function ontopic(config: Config = Config.Default) {
 }
 
 export module ontopic {
-  export function create(config: Config): ontopic {
-    let ontop = {
-      config
-    };
+  export function create<V>(config: Config<V>): ontopic<V> {
+    return null;
 
-    const functions = Object.keys(ontopic).reduce((memo, key) => {
-      const fn = ontopic[key];
-      return {
-        ...memo,
-        [key]: (...args) => fn(ontop, ...args)
-      }
-    }, {});
-
-    ontop = { ...ontop, ...functions };
-
-    return <ontopic>ontop;
+    // let ontop = {
+    //   config
+    // };
+    //
+    // const functions = Object.keys(ontopic).reduce((memo, key) => {
+    //   const fn = ontopic[key];
+    //   return {
+    //     ...memo,
+    //     [key]: (...args) => fn(ontop, ...args)
+    //   }
+    // }, {});
+    //
+    // ontop = { ...ontop, ...functions };
+    //
+    // return <ontopic<V>>ontop;
   };
 
-  export function bus(ontop: ontopic, bus: Bus): ontopic {
-    // Modify config
-    return ontop;
-  };
-
-  export function store(ontop: ontopic, store: Store): ontopic {
-    // Modify config
-    return ontop;
-  };
-
-  export function graphql(ontop: ontopic): ontopic {
-    // Modify config
-    return ontop;
-  };
-
-  export function start(ontop: ontopic): void {
-    // This is the function that should actually do stuff
-    console.log('Staring ontopic with config:', ontop.config);
-
-    return;
-  };
+  // export function start(ontop: ontopic): void {
+  //   // This is the function that should actually do stuff
+  //   console.log('Staring ontopic with config:', ontop.config);
+  //
+  //   // Initialise the store
+  //
+  //   // Start listening on the bus
+  //
+  //   // Start server(s)
+  //
+  //   return;
+  // };
 }
 
 export default ontopic;
@@ -79,6 +74,6 @@ if (require.main === module) {
 
   // Load external config here
 
-  const db = ontopic();
-  db.start();
+  // const db = ontopic();
+  // db.start();
 }
