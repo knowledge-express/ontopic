@@ -12,7 +12,7 @@ export declare function ontopic(config?: Config): ontopic;
 export declare module ontopic {
     function create(config: Config): ontopic;
     function bus(ontop: ontopic, bus: Bus): ontopic;
-    function store(ontop: ontopic, store: Store): ontopic;
+    function store(ontop: ontopic, store: Store<any>): ontopic;
     function graphql(ontop: ontopic): ontopic;
     function start(ontop: ontopic): void;
 }

@@ -7,7 +7,26 @@ The idea behind this library is to provide an abstract way of dealing with seman
 
 ontopic can use other instances of ontopic as a source for data, so you can easily distribute your data. Automatically updated queries allow you to stay... on topic 😎.
 
-## Installation
+
+## Executable
+With NPM:
+```
+npm install -g ontopic
+```
+
+With yarn:
+```
+yarn add -g ontopic
+```
+
+Usage (default config: ephemeral store, bus and graphql server):
+```
+ontopic --help
+```
+**TODO: Make CLI and insert usage info here**
+
+## Library
+### Installation
 With NPM:
 ```
 npm install -S ontopic
@@ -19,7 +38,7 @@ yarn add ontopic
 ```
 
 ## Usage
-By default ontopic is initialised with an ephemeral data store and an ephemeral bus that can send and receive updates. You can store data, push updates and do queries that automatically update their result.
+By default ontopic is initialised by default with an ephemeral data store and an ephemeral bus that can send and receive updates. You can store data, push updates and do queries that automatically update their result.
 
 ```
 import ontopic from 'ontopic';

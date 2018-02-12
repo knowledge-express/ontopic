@@ -47,7 +47,7 @@ export module ontopic {
     return ontop;
   };
 
-  export function store(ontop: ontopic, store: Store): ontopic {
+  export function store(ontop: ontopic, store: Store<any>): ontopic {
     // Modify config
     return ontop;
   };
@@ -60,6 +60,12 @@ export module ontopic {
   export function start(ontop: ontopic): void {
     // This is the function that should actually do stuff
     console.log('Staring ontopic with config:', ontop.config);
+
+    // Initialise the store
+
+    // Start listening on the bus
+
+    // Start server(s)
 
     return;
   };
