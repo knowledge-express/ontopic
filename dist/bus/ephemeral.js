@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const observable_1 = require("./observable");
-function create() {
-    const observable = observable_1.Subject.create();
+function create(updater) {
+    const observable = observable_1.Observable.create(updater);
     const subject = observable_1.Subject.create();
     return {
         observable,

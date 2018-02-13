@@ -1,11 +1,7 @@
 import { Quad } from '../data';
 import { MutableBus } from '.';
-export declare type Graph = {
-    add: (triple: object) => void;
-    remove: (triple: object) => void;
-    toArray: () => any[];
-};
-export declare function create(): MutableBus<Quad[]>;
+import { Subject } from './observable';
+export declare function create(updater?: (subject: Subject<Quad[]>) => void): MutableBus<Quad[]>;
 declare const _default: {
     create: typeof create;
 };
