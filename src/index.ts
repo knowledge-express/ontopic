@@ -28,36 +28,7 @@ export function ontopic<V>(config: Config<V> = <Config<V>><any>Config.Default): 
 export module ontopic {
   export function create<V>(config: Config<V>): ontopic<V> {
     return null;
-
-    // let ontop = {
-    //   config
-    // };
-    //
-    // const functions = Object.keys(ontopic).reduce((memo, key) => {
-    //   const fn = ontopic[key];
-    //   return {
-    //     ...memo,
-    //     [key]: (...args) => fn(ontop, ...args)
-    //   }
-    // }, {});
-    //
-    // ontop = { ...ontop, ...functions };
-    //
-    // return <ontopic<V>>ontop;
   };
-
-  // export function start(ontop: ontopic): void {
-  //   // This is the function that should actually do stuff
-  //   console.log('Staring ontopic with config:', ontop.config);
-  //
-  //   // Initialise the store
-  //
-  //   // Start listening on the bus
-  //
-  //   // Start server(s)
-  //
-  //   return;
-  // };
 }
 
 export default ontopic;

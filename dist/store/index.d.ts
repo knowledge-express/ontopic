@@ -1,4 +1,4 @@
-export declare type Query = object;
+import Query from '../query';
 export declare type ReadableStore<V> = {
     query: (query: Query) => V | Promise<V>;
 };

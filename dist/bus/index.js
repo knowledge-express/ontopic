@@ -24,6 +24,10 @@ var Bus;
     }
     Bus.readOnly = readOnly;
     ;
+    function query(bus, query) {
+        return;
+    }
+    Bus.query = query;
 })(Bus = exports.Bus || (exports.Bus = {}));
 ;
 exports.default = Bus;

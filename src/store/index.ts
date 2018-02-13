@@ -1,10 +1,10 @@
 const rdf = require('rdf');
 
+import Query from '../query';
+
 // export type StoreConfig = {
 //   mutable: boolean;
 // };
-
-export type Query = object;
 
 export type ReadableStore<V> = {
   query: (query: Query) => V | Promise<V>;

@@ -1,8 +1,9 @@
 import * as rdf from 'rdf';
 import { promises as jsonld } from 'jsonld';
 
+import Query from '../query';
 import { Quad } from '../data';
-import { MutableStore, Query } from '.';
+import { MutableStore } from '.';
 
 export type Graph = {
   add: (triple: object) => void
@@ -58,6 +59,7 @@ export function remove(graph: Graph, data: Quad[]) {
 };
 
 export default {
+  create,
   query,
   add,
   remove

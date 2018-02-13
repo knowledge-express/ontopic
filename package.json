@@ -38,6 +38,7 @@
   "author": "Steffan Sluis <steffansluis@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/core-js": "^0.9.46",
     "@types/n3": "^0.0.3",
     "@types/node": "^9.4.5",
     "isuri": "^2.0.3",

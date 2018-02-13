@@ -1,9 +1,13 @@
+import { Observable, Subject } from './observable';
+
+import Query from '../query';
+
 export type ReadableBus<V> = {
-  observable
+  observable: Observable<V>
 };
 
 export type MutableBus<V> = ReadableBus<V> & {
-  subject
+  subject: Subject<V>
 };
 
 export type Bus<V> = ReadableBus<V> | MutableBus<V>;
@@ -27,6 +31,10 @@ export module Bus {
       observable: bus.observable
     };
   };
+
+  export function query<V>(bus: Bus<V>, query: Query) {
+    return
+  }
 };
 
 export default Bus;

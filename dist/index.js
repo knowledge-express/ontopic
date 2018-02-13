@@ -17,6 +17,7 @@ exports.ontopic = ontopic;
 })(ontopic = exports.ontopic || (exports.ontopic = {}));
 exports.default = ontopic;
 __export(require("./config"));
+__export(require("./ontology"));
 __export(require("./bus"));
 __export(require("./store"));
 if (require.main === module) {

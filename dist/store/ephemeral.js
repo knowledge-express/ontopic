@@ -52,6 +52,7 @@ function remove(graph, data) {
 exports.remove = remove;
 ;
 exports.default = {
+    create,
     query,
     add,
     remove
