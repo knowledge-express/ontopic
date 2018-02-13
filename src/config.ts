@@ -1,3 +1,4 @@
+import Ontology from './ontology';
 import Bus from './bus';
 import Store from './store';
 import { Quad } from './data';
@@ -12,6 +13,12 @@ export module Config {
     busses: [],
     stores: [],
   };
+
+  export function ontology<V>(config: Config<V>, ontology: Ontology): Config<V> {
+    // Modify config
+    return config;
+  };
+
 
   export function bus<V>(config: Config<V>, bus: Bus<V>): Config<V> {
     // Modify config

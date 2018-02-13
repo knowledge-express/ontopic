@@ -2,12 +2,10 @@ const rdf = require('rdf');
 
 import Query from '../query';
 
-// export type StoreConfig = {
-//   mutable: boolean;
-// };
-
 export type ReadableStore<V> = {
   query: (query: Query) => V | Promise<V>;
+  filter: (types: string[], predicate: string, value: string) => V[]
+  getValues: (object: string, predicate: string) => string[]
 };
 
 export type MutableStore<V> = ReadableStore<V> & {
@@ -33,31 +31,33 @@ export module Store {
 
   export function readOnly<V>(store: Store<V>): ReadableStore<V> {
     return {
-      query: store.query
+      query: store.query,
+      filter: store.filter,
+      getValues: store.getValues,
     };
   };
 
   // TODO: Support lenses to allow mapping of MutableStores
-  export type MapFn<V, W> = (v: V) => W | Promise<W>;
-  export function map<V, W>(store: Store<V>, mapFn: MapFn<V, W>): Store<W> {
-    let res = {
-      query: async (q) => mapFn(await store.query(q))
-    };
-
-    // We know it's a MutableStore already, but this gives us typing
-    if(isMutableStore(store)) {
-      // We need lenses in order to be able to map MutableStores.
-      throw new Error('Not implemented.');
-
-      // return {
-      //   ...res,
-      //   add: async (data) => mapFn(await store.add(await mapFn(data))
-      //   // add: (data)
-      // };
-    }
-
-    return res;
-  };
+  // export type MapFn<V, W> = (v: V) => W | Promise<W>;
+  // export function map<V, W>(store: Store<V>, mapFn: MapFn<V, W>): Store<W> {
+  //   let res = {
+  //     query: async (q) => mapFn(await store.query(q))
+  //   };
+  //
+  //   // We know it's a MutableStore already, but this gives us typing
+  //   if(isMutableStore(store)) {
+  //     // We need lenses in order to be able to map MutableStores.
+  //     throw new Error('Not implemented.');
+  //
+  //     // return {
+  //     //   ...res,
+  //     //   add: async (data) => mapFn(await store.add(await mapFn(data))
+  //     //   // add: (data)
+  //     // };
+  //   }
+  //
+  //   return res;
+  // };
 };
 
 export default Store;

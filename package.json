@@ -45,6 +45,7 @@
     "jsonld": "^0.5.20",
     "n3": "^0.11.2",
     "rdf": "^3.0.1",
+    "rdf-tools": "^0.4.4",
     "typescript": "^2.7.1"
   },
   "devDependencies": {

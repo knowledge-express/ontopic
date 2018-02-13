@@ -7,6 +7,6 @@ export declare type Graph = {
 };
 export declare function create(): MutableBus<Quad[]>;
 declare const _default: {
-    create: () => MutableBus<Quad[]>;
+    create: typeof create;
 };
 export default _default;

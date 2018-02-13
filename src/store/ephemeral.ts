@@ -18,7 +18,9 @@ export function create(): MutableStore<Quad[]> {
   return {
     add: (data: Quad[]) => add(graph, data),
     remove: (data: Quad[]) => remove(graph, data),
-    query: (q) => query(graph, q)
+    query: (q) => query(graph, q),
+    getValues: null,
+    filter: null,
   };
 };
 

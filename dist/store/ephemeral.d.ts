@@ -15,13 +15,9 @@ export declare function query(graph: Graph, query: Query): Promise<{
 export declare function add(graph: Graph, data: Quad[]): Quad[];
 export declare function remove(graph: Graph, data: Quad[]): Quad[];
 declare const _default: {
-    create: () => MutableStore<Quad[]>;
-    query: (graph: Graph, query: object) => Promise<{
-        subject: string;
-        predicate: string;
-        object: string;
-    }[]>;
-    add: (graph: Graph, data: Quad[]) => Quad[];
-    remove: (graph: Graph, data: Quad[]) => Quad[];
+    create: typeof create;
+    query: typeof query;
+    add: typeof add;
+    remove: typeof remove;
 };
 export default _default;

@@ -6,6 +6,11 @@ var Config;
         busses: [],
         stores: [],
     };
+    function ontology(config, ontology) {
+        return config;
+    }
+    Config.ontology = ontology;
+    ;
     function bus(config, bus) {
         return config;
     }

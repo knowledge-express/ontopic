@@ -16,7 +16,9 @@ function create() {
     return {
         add: (data) => add(graph, data),
         remove: (data) => remove(graph, data),
-        query: (q) => query(graph, q)
+        query: (q) => query(graph, q),
+        getValues: null,
+        filter: null,
     };
 }
 exports.create = create;
