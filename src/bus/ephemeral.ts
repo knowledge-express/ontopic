@@ -1,11 +1,11 @@
 import { Quad } from '../data';
-import { MutableBus } from '.';
+import { MutableBus, Mutation } from '.';
 
 import { Observable, Observer, Subject } from './observable';
 
-export function create(updater?: (subject: Subject<Quad[]>) => void): MutableBus<Quad[]> {
+export function create(updater?: (subject: Subject<Mutation<Quad[]>>) => void): MutableBus<Quad[]> {
   const observable = Observable.create(updater);
-  const subject = Subject.create();
+  const subject = Subject.create<Mutation<Quad[]>>();
 
   return {
     observable,

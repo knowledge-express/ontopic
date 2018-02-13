@@ -2,12 +2,17 @@ import { Observable, Subject } from './observable';
 
 import Query from '../query';
 
+export type Mutation<V> = {
+  action: 'add' | 'remove'
+  data: V
+};
+
 export type ReadableBus<V> = {
-  observable: Observable<V>
+  observable: Observable<Mutation<V>>
 };
 
 export type MutableBus<V> = ReadableBus<V> & {
-  subject: Subject<V>
+  subject: Subject<Mutation<V>>
 };
 
 export type Bus<V> = ReadableBus<V> | MutableBus<V>;
