@@ -1,8 +1,9 @@
 import Ontology from './ontology';
 import Bus from './bus';
 import Store from './store';
-import { Quad } from './data';
+import { Encoder, Quad } from './data';
 export declare type Config<V> = {
+    encoder: Encoder<V, Quad[]>;
     busses: Bus<V>[];
     stores: Store<V>[];
 };

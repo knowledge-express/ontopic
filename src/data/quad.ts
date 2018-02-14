@@ -1,7 +1,33 @@
-// This file should offer some conversion function to make things into quads.
-
 import * as n3 from 'n3';
-import * as Helpers from '.';
+import * as isuri from 'isuri';
+
+export function iriify(str: string) {
+  return `<${str}>`;
+}
+
+export function encodeRDF(str: string) {
+  if (isURI(str)) return iriify(str);
+  if (isLiteral(str)) return encodeLiteral(str);
+  try {
+    JSON.parse(str);
+    return str;
+  } catch(e) {
+    return JSON.stringify(str);
+  }
+}
+
+export function isURI(str: string) {
+  return isuri.isValid(str);
+}
+
+export function isLiteral(str: string) {
+  return /\^\^/.test(str);
+}
+
+export function encodeLiteral(str) {
+  const [ value, type ] = str.split("^^");
+  return `${value}^^${iriify(type)}`;
+}
 
 export type NQuads = string;
 
@@ -37,24 +63,23 @@ export module Quad {
   }
 
   export function fromNQuads(nquads: NQuads): Quad[] {
-    // console.log('fromNQuads:', nquads);
     const parser = n3.Parser();
-    const quads = (<n3.Triple[]><any>parser.parse(nquads, null)).map(({ subject, predicate, object, graph}) => {
+    const quads = (<n3.Triple[]><any>parser.parse(nquads, null)).map(({ subject, predicate, object, graph }) => {
       return {
         subject,
         predicate,
         object,
-        label: graph
+        ...(graph != null && graph != "" ? { label: graph } : {})
       }
     });
 
     return quads;
   }
 
-  export const toNQuads = (quads: Quad[]): NQuads => {
+  export function toNQuads(quads: Quad[]): NQuads {
     return quads.map(quad => {
       const { subject, predicate, object, label } = quad;
-      return `<${subject}> <${predicate}> ${Helpers.encodeRDF(object)} ${label ? `<${label}>` : ''} .\n`;
+      return `<${subject}> <${predicate}> ${encodeRDF(object)} ${label ? `<${label}>` : ''} .\n`;
     }).join('');
   };
 

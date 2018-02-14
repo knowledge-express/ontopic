@@ -1,7 +1,6 @@
-import { Quad } from '../data';
 import { MutableBus, Mutation } from '.';
 import { Subject } from './observable';
-export declare function create(updater?: (subject: Subject<Mutation<Quad[]>>) => void): MutableBus<Quad[]>;
+export declare function create<V>(updater?: (subject: Subject<Mutation<V>>) => void): MutableBus<V>;
 declare const _default: {
     create: typeof create;
 };

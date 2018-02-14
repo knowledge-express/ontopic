@@ -2,10 +2,10 @@ import Config from './config';
 
 import Ontology from './ontology';
 
-import Bus from './bus';
-import Store from './store';
+import * as Bus from './bus';
+import * as Store from './store';
 
-import { Quad } from './data';
+import { Quad, Encoder } from './data';
 
 import * as EphemeralBus from './bus/ephemeral';
 import * as EphemeralStore from './store/ephemeral';
@@ -13,8 +13,8 @@ import * as EphemeralStore from './store/ephemeral';
 import { Observable, Subject } from './bus/observable';
 
 export type ontopic<V> = {
-  bus: Bus<V>
-  store: Store<V>
+  bus: Bus.Bus<V>
+  store: Store.Store<V>
   // config: Config;
   // store: () => void;
   // bus: () => void;
@@ -22,54 +22,90 @@ export type ontopic<V> = {
   // start: () => void;
 };
 
-export function ontopic<V>(config: Config<V> = <Config<V>><any>Config.Default): ontopic<Quad[]> {
-  // Initialise the system here with an ontology
-
-  // Return something that can be configured declaritvely like express.
-  // 'I want to use these stores and listen to updates from these busses!'
-  // 'Also give me a GraphQL and a SparQL server to query my stores.'
-  // 'Also make GraphQL subscriptions using the busses'
-  return ontopic.create(config);
-}
+export function ontopic(): ontopic<Quad[]>;
+export function ontopic(config?: Config<Quad[]>): ontopic<Quad[]>;
+// export function ontopic<V>(config?: Config<any>): ontopic<Quad[]>;
+export function ontopic<V>(config: Config<V>): ontopic<V>;
+export function ontopic(config = Config.Default) {
+  return ontopic.fromConfig(config);
+};
 
 export module ontopic {
-  export function create<V>(config: Config<V>): ontopic<Quad[]> {
-    const store = EphemeralStore.create();
+  export function fromConfig<V>(config?: Config<V>) {
+    return create(config.encoder);
+  };
 
-    // Mutating to the newStore ensures an update is sent on the storeUpdates
-    const storeUpdates = Subject.create();
-    const newStore = {
-      ...store,
-      add: async (data) => {
-        const result = await store.add(data);
-        storeUpdates.onNext({ action: 'add', data: result });
-        return result;
-      },
-      remove: async (data) => {
-        const result = await store.remove(data);
-        storeUpdates.onNext({ action: 'remove', data: result });
-        return result;
-      },
+  // export function from<V>(store: Store.MutableStore<V>, bus: Bus.MutableBus<V>) {
+  //   // Proxy both to prevent looping
+  //   const updateRequests = Subject.create<Bus.Mutation<V>>();
+  //   const updates = Subject.create<Bus.Mutation<V>>();
+  //
+  //   // Whenever we get an update request, process it
+  //   bus.observable.subscribe(updateRequests);
+  //
+  //   // Whenever we get an update request, update the store and pass the update
+  //   const connectedStore = Store.connect(store, { observable: { subscribe: updateRequests.subscribe }, subject: updates });
+  //
+  //   // Whenever we've processed an update request, update the bus
+  //   const connectedBus = Bus.connect({ subject: bus.subject, observable: { subscribe: updates.subscribe } }, store);
+  //
+  //   return {
+  //     bus: connectedBus,
+  //     store: connectedStore,
+  //   }
+  // };
+
+  export function create<V>(encoder: Encoder<V, Quad[]>): ontopic<V> {
+    const store = EphemeralStore.create();
+    const bus = EphemeralBus.create<V>();
+    const encoded = Store.encode(store, encoder);
+    return connect(encoded, bus);
+  };
+
+  export function connect<V>(store: Store.MutableStore<V>, bus: Bus.MutableBus<V>): ontopic<V> {
+    const storeUpdates = Subject.create<Bus.Mutation<V>>();
+
+    // Make sure we get an update whenever the store is modified directly
+    async function add(data: V) {
+      const result = await store.add(data);
+      storeUpdates.onNext({ action: 'add', data: result });
+      return result;
+    }
+
+    async function remove(data) {
+      const result = await store.add(data);
+      storeUpdates.onNext({ action: 'add', data: result });
+      return result;
+    }
+
+    const newStore: Store.MutableStore<V> = {
+      query: store.query,
+      filter: store.filter,
+      getValues: store.getValues,
+      add,
+      remove,
     };
 
     // We use a subject because we need to exist before the bus is created,
     // so we can't move the Observable.map above the creation of the bus.
-    const busUpdates = Subject.create();
+    const busUpdates = Subject.create<Bus.Mutation<V>>();
 
-    // Connect store to bus
-    const bus = EphemeralBus.create((subject) => {
+    // Make sure the bus is subscribed to the processed updates
+    const newBus = EphemeralBus.create<V>((subject) => {
+      bus.subject.subscribe(subject);
       storeUpdates.subscribe(subject);
       busUpdates.subscribe(subject);
     });
 
-    // Connect bus to store
-    Observable.map(bus.subject, async mutation => {
+    // Process bus update requests
+    Observable.map(newBus.subject, async mutation => {
       const { action, data } = mutation;
-      return { action, data: await store[action](data) };
+      const result = await store[action](data);
+      return { action, data: result };
     }).subscribe(busUpdates);
 
     return {
-      bus,
+      bus: newBus,
       store: newStore
     };
   };
@@ -79,8 +115,12 @@ export default ontopic;
 
 export * from './config';
 export * from './ontology';
-export * from './bus';
-export * from './store';
+// export * from './bus';
+// export * from './store';
+export {
+  Bus,
+  Store
+};
 
 // Start ephemeral store, bus, and graphql server by default
 declare const require: any;

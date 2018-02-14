@@ -1,15 +1,17 @@
 import Ontology from './ontology';
 import Bus from './bus';
 import Store from './store';
-import { Quad } from './data';
+import { Encoder, Quad } from './data';
 
 export type Config<V> = {
+  encoder: Encoder<V, Quad[]>
   busses: Bus<V>[]
   stores: Store<V>[]
 };
 
 export module Config {
   export const Default: Config<Quad[]> = {
+    encoder: Encoder.Identity<Quad[]>(),
     busses: [],
     stores: [],
   };

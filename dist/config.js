@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const data_1 = require("./data");
 var Config;
 (function (Config) {
     Config.Default = {
+        encoder: data_1.Encoder.Identity(),
         busses: [],
         stores: [],
     };

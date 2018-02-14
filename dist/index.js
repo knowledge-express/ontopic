@@ -12,48 +12,77 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("./config");
+const Bus = require("./bus");
+exports.Bus = Bus;
+const Store = require("./store");
+exports.Store = Store;
 const EphemeralBus = require("./bus/ephemeral");
 const EphemeralStore = require("./store/ephemeral");
 const observable_1 = require("./bus/observable");
 function ontopic(config = config_1.default.Default) {
-    return ontopic.create(config);
+    return ontopic.fromConfig(config);
 }
 exports.ontopic = ontopic;
+;
 (function (ontopic) {
-    function create(config) {
+    function fromConfig(config) {
+        return create(config.encoder);
+    }
+    ontopic.fromConfig = fromConfig;
+    ;
+    function create(encoder) {
         const store = EphemeralStore.create();
+        const bus = EphemeralBus.create();
+        const encoded = Store.encode(store, encoder);
+        return connect(encoded, bus);
+    }
+    ontopic.create = create;
+    ;
+    function connect(store, bus) {
         const storeUpdates = observable_1.Subject.create();
-        const newStore = Object.assign({}, store, { add: (data) => __awaiter(this, void 0, void 0, function* () {
+        function add(data) {
+            return __awaiter(this, void 0, void 0, function* () {
                 const result = yield store.add(data);
                 storeUpdates.onNext({ action: 'add', data: result });
                 return result;
-            }), remove: (data) => __awaiter(this, void 0, void 0, function* () {
-                const result = yield store.remove(data);
-                storeUpdates.onNext({ action: 'remove', data: result });
+            });
+        }
+        function remove(data) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const result = yield store.add(data);
+                storeUpdates.onNext({ action: 'add', data: result });
                 return result;
-            }) });
+            });
+        }
+        const newStore = {
+            query: store.query,
+            filter: store.filter,
+            getValues: store.getValues,
+            add,
+            remove,
+        };
         const busUpdates = observable_1.Subject.create();
-        const bus = EphemeralBus.create((subject) => {
+        const newBus = EphemeralBus.create((subject) => {
+            bus.subject.subscribe(subject);
             storeUpdates.subscribe(subject);
             busUpdates.subscribe(subject);
         });
-        observable_1.Observable.map(bus.subject, (mutation) => __awaiter(this, void 0, void 0, function* () {
+        observable_1.Observable.map(newBus.subject, (mutation) => __awaiter(this, void 0, void 0, function* () {
             const { action, data } = mutation;
-            return { action, data: yield store[action](data) };
+            const result = yield store[action](data);
+            return { action, data: result };
         })).subscribe(busUpdates);
         return {
-            bus,
+            bus: newBus,
             store: newStore
         };
     }
-    ontopic.create = create;
+    ontopic.connect = connect;
     ;
 })(ontopic = exports.ontopic || (exports.ontopic = {}));
 exports.default = ontopic;
 __export(require("./config"));
 __export(require("./ontology"));
-__export(require("./bus"));
-__export(require("./store"));
 if (require.main === module) {
     console.log('Starting as script...');
 }

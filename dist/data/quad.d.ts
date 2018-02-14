@@ -1,4 +1,8 @@
-import * as Helpers from '.';
+export declare function iriify(str: string): string;
+export declare function encodeRDF(str: string): string;
+export declare function isURI(str: string): any;
+export declare function isLiteral(str: string): boolean;
+export declare function encodeLiteral(str: any): string;
 export declare type NQuads = string;
 export declare type Quad = {
     subject: string;
@@ -10,5 +14,5 @@ export declare module Quad {
     function isQuad(quad: object): quad is Quad;
     function compare(a: Quad, b: Quad): number;
     function fromNQuads(nquads: NQuads): Quad[];
-    const toNQuads: (quads: Helpers.Quad[]) => string;
+    function toNQuads(quads: Quad[]): NQuads;
 }

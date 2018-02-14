@@ -1,7 +1,38 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const n3 = require("n3");
-const Helpers = require(".");
+const isuri = require("isuri");
+function iriify(str) {
+    return `<${str}>`;
+}
+exports.iriify = iriify;
+function encodeRDF(str) {
+    if (isURI(str))
+        return iriify(str);
+    if (isLiteral(str))
+        return encodeLiteral(str);
+    try {
+        JSON.parse(str);
+        return str;
+    }
+    catch (e) {
+        return JSON.stringify(str);
+    }
+}
+exports.encodeRDF = encodeRDF;
+function isURI(str) {
+    return isuri.isValid(str);
+}
+exports.isURI = isURI;
+function isLiteral(str) {
+    return /\^\^/.test(str);
+}
+exports.isLiteral = isLiteral;
+function encodeLiteral(str) {
+    const [value, type] = str.split("^^");
+    return `${value}^^${iriify(type)}`;
+}
+exports.encodeLiteral = encodeLiteral;
 var Quad;
 (function (Quad) {
     function isQuad(quad) {
@@ -27,20 +58,19 @@ var Quad;
     function fromNQuads(nquads) {
         const parser = n3.Parser();
         const quads = parser.parse(nquads, null).map(({ subject, predicate, object, graph }) => {
-            return {
-                subject,
+            return Object.assign({ subject,
                 predicate,
-                object,
-                label: graph
-            };
+                object }, (graph != null && graph != "" ? { label: graph } : {}));
         });
         return quads;
     }
     Quad.fromNQuads = fromNQuads;
-    Quad.toNQuads = (quads) => {
+    function toNQuads(quads) {
         return quads.map(quad => {
             const { subject, predicate, object, label } = quad;
-            return `<${subject}> <${predicate}> ${Helpers.encodeRDF(object)} ${label ? `<${label}>` : ''} .\n`;
+            return `<${subject}> <${predicate}> ${encodeRDF(object)} ${label ? `<${label}>` : ''} .\n`;
         }).join('');
-    };
+    }
+    Quad.toNQuads = toNQuads;
+    ;
 })(Quad = exports.Quad || (exports.Quad = {}));
