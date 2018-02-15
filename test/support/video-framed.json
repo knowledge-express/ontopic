@@ -1,0 +1,385 @@
+{
+  "@id": "https://www.youtube.com/watch?v=pi3WWQ0q6Lc",
+  "@type": [
+    "https://knowledge.express/Resource",
+    "http://schema.org/VideoObject"
+  ],
+  "https://knowledge.express/caption": [
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDBTLVAwLjZT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDAuNlMtUDMuNDdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDQuMDdTLVA0Ljk3NVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDkuMDQ1Uy1QMy40NzVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEyLjUyUy1QMi44OFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE1LjRTLVAxLjQ0Uw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE2Ljg0Uy1QMy4wMVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE5Ljg1Uy1QNi43NlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI2LjYxUy1QMi4xUw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI4LjcxUy1QMy4yNFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDMxLjk1Uy1QMi43NVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDM0LjdTLVAxLjg5Uw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDM2LjU5Uy1QNC4wNlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDQwLjY1Uy1QMi4zMjVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDQyLjk3NVMtUDIuMzc1Uw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDQ1LjM1Uy1QMS42OFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDQ3LjAzUy1QMi4wNlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDQ5LjA5Uy1QMS4zN1M=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDUwLjQ2Uy1QNC4wMVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDU0LjQ3Uy1QMi44NVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDU3LjMyUy1QNC44M1M=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDYyLjE1Uy1QMS42NDNT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDYzLjc5M1MtUDEuNDE2Uw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDY1LjIwOVMtUDIuMTkxUw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDY3LjRTLVAzLjQxUw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDcwLjgxUy1QMi42NlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDczLjQ3Uy1QMS42NVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDc1LjEyUy1QMS44NFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDc2Ljk2Uy1QMy4xMVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDgwLjA3Uy1QMS42NVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDgxLjcyUy1QOC4zMlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDkwLjA0Uy1QMi4yNFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDkyLjI4Uy1QNC41MVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDk2Ljc5Uy1QMy43NlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEwMC41NVMtUDEuNjdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEwMi4yMlMtUDEuNzVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEwMy45N1MtUDIuMzdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEwNi4zNFMtUDMuODNT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDExMC4xN1MtUDIuOTUzUw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDExMy4xMjNTLVA1LjQwN1M=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDExOC41M1MtUDMuNTJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEyMi4wNVMtUDIuNjVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEyNC43Uy1QMi4wNlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEyNi43NlMtUDEuNzRT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEyOC41Uy1QMS43MlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEzMC4yMlMtUDIuMjJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEzMi40NFMtUDIuMjZT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEzNC43Uy1QMi45Uw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDEzNy42Uy1QNC4zMlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE0MS45MlMtUDIuMzVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE0NC4yN1MtUDIuNzVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE0Ny4wMlMtUDIuMDdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE0OS4wOVMtUDEuNDJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE1MC41MVMtUDMuNFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE1My45MVMtUDIuNTdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE1Ni40OFMtUDMuMjJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE1OS43Uy1QMy40NlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE2My4xNlMtUDEuOTNT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE2NS4wOVMtUDEuMDZT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE2Ni4xNVMtUDguNzFT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE3NC44NlMtUDEuNVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE3Ni4zNlMtUDMuOTQ5Uw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE4MC4zMDlTLVAxLjc5MVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE4Mi4xUy1QMi45OVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE4NS4wOVMtUDIuMDJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE4Ny4xMVMtUDIuMjk5Uw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE4OS40MDlTLVAxLjQxNlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE5MC44MjVTLVAzLjI5NVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE5NC4xMlMtUDEuNTdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE5NS42OVMtUDJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDE5Ny42OVMtUDIuNlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIwMC4yOVMtUDEuOFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIwMi4wOVMtUDIuODIyUw==",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIwNC45MTJTLVAxLjA4M1M=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIwNS45OTVTLVAzLjAyNVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIwOS4wMlMtUDMuNlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIxMi42MlMtUDcuNDhT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIyMC4xUy1QMi4zNVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIyMi40NVMtUDYuODJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIyOS4yN1MtUDQuNDVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIzMy43MlMtUDIuMjJT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIzNS45NFMtUDIuOTdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDIzOC45MVMtUDMuNTlT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI0Mi41Uy1QNC4yOVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI0Ni43OVMtUDEuMVM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI0Ny44OVMtUDQuNjZT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI1Mi41NVMtUDEuNlM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI1NC4xNVMtUDQuMzNT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI1OC40OFMtUDMuNTNT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI2Mi4wMVMtUDEuNjVT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI2My42NlMtUDEuODlT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI2NS41NVMtUDEuNTdT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI2Ny4xMlMtUDIuNTlT",
+      "@type": "https://knowledge.express/VideoCaption"
+    },
+    {
+      "@id": "https://video.google.com/timedtext?v=pi3WWQ0q6Lc&lang=en#UDI2OS43MVMtUDMuNFM=",
+      "@type": "https://knowledge.express/VideoCaption"
+    }
+  ]
+}

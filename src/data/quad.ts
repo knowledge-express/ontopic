@@ -1,44 +1,50 @@
 import * as n3 from 'n3';
 import * as isuri from 'isuri';
 
-export function iriify(str: string) {
-  return `<${str}>`;
-}
-
-export function encodeRDF(str: string) {
-  if (isURI(str)) return iriify(str);
-  if (isLiteral(str)) return encodeLiteral(str);
-  try {
-    JSON.parse(str);
-    return str;
-  } catch(e) {
-    return JSON.stringify(str);
-  }
-}
-
-export function isURI(str: string) {
-  return isuri.isValid(str);
-}
-
-export function isLiteral(str: string) {
-  return /\^\^/.test(str);
-}
-
-export function encodeLiteral(str) {
-  const [ value, type ] = str.split("^^");
-  return `${value}^^${iriify(type)}`;
-}
-
-export type NQuads = string;
-
 export type Quad = {
-  subject: string,
-  predicate: string,
-  object: string,
-  label?: string
+  subject: Quad.IRI,
+  predicate: Quad.IRI,
+  object: Quad.IRI | string,
+  label?: Quad.IRI
 };
 
 export module Quad {
+  export type NQuads = string;
+  export type Literal = string;
+  export type IRI = string;
+
+  export function encodeRDF(str: string): string {
+    if (isURI(str)) return encodeIRI(str);
+    if (isLiteral(str)) return encodeLiteral(str);
+    try {
+      JSON.parse(str);
+      return str;
+    } catch(e) {
+      return JSON.stringify(str);
+    }
+  }
+
+  export function isIRI(str: string): str is IRI {
+    return isURI(str);
+  }
+
+  export function isURI(str: string): boolean {
+    return isuri.isValid(str);
+  }
+
+  export function isLiteral(str: string): str is Literal {
+    return /\^\^/.test(str);
+  }
+
+  export function encodeIRI(iri: IRI): string {
+    return `<${iri}>`;
+  }
+
+  export function encodeLiteral(literal: Literal): string {
+    const [ value, type ] = literal.split("^^");
+    return `${value}^^${encodeIRI(type)}`;
+  }
+
   export function isQuad(quad: object): quad is Quad {
     return quad != null &&
     typeof quad === 'object' &&
@@ -84,3 +90,5 @@ export module Quad {
   };
 
 }
+
+export default Quad;

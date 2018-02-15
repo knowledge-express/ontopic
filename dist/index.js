@@ -63,9 +63,9 @@ exports.ontopic = ontopic;
         };
         const busUpdates = observable_1.Subject.create();
         const newBus = EphemeralBus.create((subject) => {
-            bus.subject.subscribe(subject);
             storeUpdates.subscribe(subject);
             busUpdates.subscribe(subject);
+            bus.subject.subscribe(subject);
         });
         observable_1.Observable.map(newBus.subject, (mutation) => __awaiter(this, void 0, void 0, function* () {
             const { action, data } = mutation;
@@ -83,6 +83,7 @@ exports.ontopic = ontopic;
 exports.default = ontopic;
 __export(require("./config"));
 __export(require("./ontology"));
+__export(require("./data"));
 if (require.main === module) {
     console.log('Starting as script...');
 }

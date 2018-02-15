@@ -5,7 +5,7 @@ import Ontology from './ontology';
 import * as Bus from './bus';
 import * as Store from './store';
 
-import { Quad, Encoder } from './data';
+import * as Data from './data';
 
 import * as EphemeralBus from './bus/ephemeral';
 import * as EphemeralStore from './store/ephemeral';
@@ -13,7 +13,7 @@ import * as EphemeralStore from './store/ephemeral';
 import { Observable, Subject } from './bus/observable';
 
 export type ontopic<V> = {
-  bus: Bus.Bus<V>
+  bus: Bus.Bus<Data.Mutation<V>>
   store: Store.Store<V>
   // config: Config;
   // store: () => void;
@@ -22,9 +22,9 @@ export type ontopic<V> = {
   // start: () => void;
 };
 
-export function ontopic(): ontopic<Quad[]>;
-export function ontopic(config?: Config<Quad[]>): ontopic<Quad[]>;
-// export function ontopic<V>(config?: Config<any>): ontopic<Quad[]>;
+export function ontopic(): ontopic<Data.Quad[]>;
+export function ontopic(config?: Config<Data.Quad[]>): ontopic<Data.Quad[]>;
+// export function ontopic<V>(config?: Config<any>): ontopic<Data.Quad[]>;
 export function ontopic<V>(config: Config<V>): ontopic<V>;
 export function ontopic(config = Config.Default) {
   return ontopic.fromConfig(config);
@@ -35,35 +35,15 @@ export module ontopic {
     return create(config.encoder);
   };
 
-  // export function from<V>(store: Store.MutableStore<V>, bus: Bus.MutableBus<V>) {
-  //   // Proxy both to prevent looping
-  //   const updateRequests = Subject.create<Bus.Mutation<V>>();
-  //   const updates = Subject.create<Bus.Mutation<V>>();
-  //
-  //   // Whenever we get an update request, process it
-  //   bus.observable.subscribe(updateRequests);
-  //
-  //   // Whenever we get an update request, update the store and pass the update
-  //   const connectedStore = Store.connect(store, { observable: { subscribe: updateRequests.subscribe }, subject: updates });
-  //
-  //   // Whenever we've processed an update request, update the bus
-  //   const connectedBus = Bus.connect({ subject: bus.subject, observable: { subscribe: updates.subscribe } }, store);
-  //
-  //   return {
-  //     bus: connectedBus,
-  //     store: connectedStore,
-  //   }
-  // };
-
-  export function create<V>(encoder: Encoder<V, Quad[]>): ontopic<V> {
+  export function create<V>(encoder: Data.Encoder<Data.Quad[], V>): ontopic<V> {
     const store = EphemeralStore.create();
-    const bus = EphemeralBus.create<V>();
+    const bus = EphemeralBus.create<Data.Mutation<V>>();
     const encoded = Store.encode(store, encoder);
     return connect(encoded, bus);
   };
 
-  export function connect<V>(store: Store.MutableStore<V>, bus: Bus.MutableBus<V>): ontopic<V> {
-    const storeUpdates = Subject.create<Bus.Mutation<V>>();
+  export function connect<V>(store: Store.MutableStore<V>, bus: Bus.MutableBus<Data.Mutation<V>>): ontopic<V> {
+    const storeUpdates = Subject.create<Data.Mutation<V>>();
 
     // Make sure we get an update whenever the store is modified directly
     async function add(data: V) {
@@ -88,13 +68,16 @@ export module ontopic {
 
     // We use a subject because we need to exist before the bus is created,
     // so we can't move the Observable.map above the creation of the bus.
-    const busUpdates = Subject.create<Bus.Mutation<V>>();
+    const busUpdates = Subject.create<Data.Mutation<V>>();
 
     // Make sure the bus is subscribed to the processed updates
-    const newBus = EphemeralBus.create<V>((subject) => {
-      bus.subject.subscribe(subject);
+    const newBus = EphemeralBus.create<Data.Mutation<V>>((subject) => {
+      // Whenever we have updated the orignal store, send an update
       storeUpdates.subscribe(subject);
       busUpdates.subscribe(subject);
+
+      // This means: Whevener we are notified of having been updated indirectly somehow, assume the data is present
+      bus.subject.subscribe(subject);
     });
 
     // Process bus update requests
@@ -115,6 +98,7 @@ export default ontopic;
 
 export * from './config';
 export * from './ontology';
+export * from './data';
 // export * from './bus';
 // export * from './store';
 export {

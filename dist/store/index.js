@@ -36,7 +36,9 @@ exports.readOnly = readOnly;
 function encode(store, encoder) {
     function query(query) {
         return __awaiter(this, void 0, void 0, function* () {
-            return null;
+            const result = yield store.query(query);
+            const encoded = encoder.encode(result);
+            return encoded;
         });
     }
     function filter() {
@@ -49,20 +51,18 @@ function encode(store, encoder) {
             return null;
         });
     }
-    function add(data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const encoded = yield encoder.encode(data);
-            const decoded = yield encoder.decode(yield store.add(encoded));
-            return decoded;
-        });
-    }
-    function remove(data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const encoded = yield encoder.encode(data);
-            const decoded = yield encoder.decode(yield store.remove(encoded));
-            return decoded;
-        });
-    }
+    if (!isMutableStore(store))
+        return { query, filter, getValues };
+    const add = (data) => __awaiter(this, void 0, void 0, function* () {
+        const decoded = yield encoder.decode(data);
+        const encoded = yield encoder.encode(yield store.add(decoded));
+        return encoded;
+    });
+    const remove = (data) => __awaiter(this, void 0, void 0, function* () {
+        const decoded = yield encoder.decode(data);
+        const encoded = yield encoder.encode(yield store.remove(decoded));
+        return encoded;
+    });
     return {
         query,
         filter,

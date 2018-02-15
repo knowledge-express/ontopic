@@ -14,5 +14,6 @@ export declare function isStore<V>(obj: object): obj is Store<V>;
 export declare function isReadableStore<V>(store: object): store is ReadableStore<V>;
 export declare function isMutableStore<V>(store: object): store is MutableStore<V>;
 export declare function readOnly<V>(store: Store<V>): ReadableStore<V>;
-export declare function encode<V, W>(store: MutableStore<V>, encoder: Encoder<W, V>): MutableStore<W>;
+export declare function encode<V, W>(store: MutableStore<V>, encoder: Encoder<V, W>): MutableStore<W>;
+export declare function encode<V, W>(store: ReadableStore<V>, encoder: Encoder<V, W>): ReadableStore<W>;
 export default Store;

@@ -60,6 +60,19 @@ var Observable;
         });
     }
     Observable.filter = filter;
+    function flatten(observable) {
+        return create(subject => {
+            observable.subscribe({
+                onNext: (values) => __awaiter(this, void 0, void 0, function* () {
+                    return values.reduce((memo, value) => __awaiter(this, void 0, void 0, function* () {
+                        yield memo;
+                        return subject.onNext(value);
+                    }), Promise.resolve());
+                })
+            });
+        });
+    }
+    Observable.flatten = flatten;
     function scan(observable, scanFn, memo) {
         return create(subject => {
             observable.subscribe({

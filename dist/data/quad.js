@@ -2,39 +2,43 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const n3 = require("n3");
 const isuri = require("isuri");
-function iriify(str) {
-    return `<${str}>`;
-}
-exports.iriify = iriify;
-function encodeRDF(str) {
-    if (isURI(str))
-        return iriify(str);
-    if (isLiteral(str))
-        return encodeLiteral(str);
-    try {
-        JSON.parse(str);
-        return str;
-    }
-    catch (e) {
-        return JSON.stringify(str);
-    }
-}
-exports.encodeRDF = encodeRDF;
-function isURI(str) {
-    return isuri.isValid(str);
-}
-exports.isURI = isURI;
-function isLiteral(str) {
-    return /\^\^/.test(str);
-}
-exports.isLiteral = isLiteral;
-function encodeLiteral(str) {
-    const [value, type] = str.split("^^");
-    return `${value}^^${iriify(type)}`;
-}
-exports.encodeLiteral = encodeLiteral;
 var Quad;
 (function (Quad) {
+    function encodeRDF(str) {
+        if (isURI(str))
+            return encodeIRI(str);
+        if (isLiteral(str))
+            return encodeLiteral(str);
+        try {
+            JSON.parse(str);
+            return str;
+        }
+        catch (e) {
+            return JSON.stringify(str);
+        }
+    }
+    Quad.encodeRDF = encodeRDF;
+    function isIRI(str) {
+        return isURI(str);
+    }
+    Quad.isIRI = isIRI;
+    function isURI(str) {
+        return isuri.isValid(str);
+    }
+    Quad.isURI = isURI;
+    function isLiteral(str) {
+        return /\^\^/.test(str);
+    }
+    Quad.isLiteral = isLiteral;
+    function encodeIRI(iri) {
+        return `<${iri}>`;
+    }
+    Quad.encodeIRI = encodeIRI;
+    function encodeLiteral(literal) {
+        const [value, type] = literal.split("^^");
+        return `${value}^^${encodeIRI(type)}`;
+    }
+    Quad.encodeLiteral = encodeLiteral;
     function isQuad(quad) {
         return quad != null &&
             typeof quad === 'object' &&
@@ -74,3 +78,4 @@ var Quad;
     Quad.toNQuads = toNQuads;
     ;
 })(Quad = exports.Quad || (exports.Quad = {}));
+exports.default = Quad;

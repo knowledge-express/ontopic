@@ -22,10 +22,11 @@ export declare module Observable {
     function pipe<T>(observable: Observable<T>, observer: Observer<T>): Observer<T>;
     function map<T, U>(observable: Observable<T>, mapFn: (value: T) => U | Promise<U>): Observable<U>;
     function filter<T>(observable: Observable<T>, filterFn: (value: T) => boolean | Promise<boolean>): Observable<T>;
+    function flatten<T>(observable: Observable<T[]>): Observable<T>;
     function scan<T, U>(observable: Observable<T>, scanFn: (memo: U, value: T) => U | Promise<U>, memo: U): Observable<U>;
     function forEach<T>(observable: Observable<T>, fn: (value: T) => void | Promise<void>): Disposable;
     function fromPromise<T>(promise: Promise<T>): {
-        subscribe: (observer: Observer<{}>) => Disposable;
+        subscribe: (observer: Observer<T>) => Disposable;
     };
     function toPromise<T>(observable: Observable<T>): Promise<T>;
 }

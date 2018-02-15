@@ -1,11 +1,11 @@
 import Ontology from './ontology';
 import Bus from './bus';
 import Store from './store';
-import { Encoder, Quad } from './data';
+import { Encoder, Quad, Mutation } from './data';
 
 export type Config<V> = {
-  encoder: Encoder<V, Quad[]>
-  busses: Bus<V>[]
+  encoder: Encoder<Quad[], V>
+  busses: Bus<Mutation<V>>[]
   stores: Store<V>[]
 };
 
@@ -22,7 +22,7 @@ export module Config {
   };
 
 
-  export function bus<V>(config: Config<V>, bus: Bus<V>): Config<V> {
+  export function bus<V>(config: Config<V>, bus: Bus<Mutation<V>>): Config<V> {
     // Modify config
     return config;
   };
