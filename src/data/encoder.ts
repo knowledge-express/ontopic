@@ -1,4 +1,4 @@
-import { Quad, JSONLD } from '.';
+import { Quad, JSONLD, Mutation } from '.';
 
 export type Encoder<V, W> = {
   encode: (data: V) => W | Promise<W>
@@ -13,6 +13,13 @@ export module Encoder {
     }
   };
 
+  // export function toAddMutation<V>(): Encoder<V, Mutation<V>> {
+  //   return {
+  //     encode: (data) => Mutation.add<V>(data),
+  //     decode: (encoded) => encoded.data,
+  //   }
+  // };
+
   export function JSONLDToQuads(): Encoder<JSONLD, Quad[]> {
     return {
       encode: async (data) => {
@@ -25,6 +32,28 @@ export module Encoder {
   };
 
   export const quadsToJSONLD = () => invert(JSONLDToQuads());
+
+  export function compactJSONLD(context: JSONLD.Context): Encoder<JSONLD, JSONLD> {
+    return {
+      encode: async (data) => {
+        return await JSONLD.compact(data, context);
+      },
+      decode: async (encoded) => {
+        return await JSONLD.expand(encoded, context);
+      }
+    }
+  };
+
+  export function expandJSONLD(context: JSONLD.Context): Encoder<JSONLD, JSONLD> {
+    return {
+      encode: async (data) => {
+        return await JSONLD.expand(data, context);
+      },
+      decode: async (encoded) => {
+        return await JSONLD.compact(encoded, context);
+      }
+    }
+  };
 
   export function invert<X, Y>(encoder: Encoder<X, Y>): Encoder<Y, X> {
     async function encode(data) {

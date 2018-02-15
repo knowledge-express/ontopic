@@ -6,3 +6,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./encoder"));
 __export(require("./jsonld"));
 __export(require("./quad"));
+__export(require("./mutation"));

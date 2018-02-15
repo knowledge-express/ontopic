@@ -6,7 +6,9 @@ export declare type Encoder<V, W> = {
 export declare module Encoder {
     function Identity<V>(): Encoder<V, V>;
     function JSONLDToQuads(): Encoder<JSONLD, Quad[]>;
-    const quadsToJSONLD: () => Encoder<Quad[], JSONLD>;
+    const quadsToJSONLD: () => Encoder<Quad[], JSONLD.Document>;
+    function compactJSONLD(context: JSONLD.Context): Encoder<JSONLD, JSONLD>;
+    function expandJSONLD(context: JSONLD.Context): Encoder<JSONLD, JSONLD>;
     function invert<X, Y>(encoder: Encoder<X, Y>): Encoder<Y, X>;
     function compose<X, Y, Z>(a: Encoder<X, Y>, b: Encoder<Y, Z>): Encoder<X, Z>;
 }

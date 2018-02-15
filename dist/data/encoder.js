@@ -32,6 +32,30 @@ var Encoder;
     Encoder.JSONLDToQuads = JSONLDToQuads;
     ;
     Encoder.quadsToJSONLD = () => invert(JSONLDToQuads());
+    function compactJSONLD(context) {
+        return {
+            encode: (data) => __awaiter(this, void 0, void 0, function* () {
+                return yield _1.JSONLD.compact(data, context);
+            }),
+            decode: (encoded) => __awaiter(this, void 0, void 0, function* () {
+                return yield _1.JSONLD.expand(encoded, context);
+            })
+        };
+    }
+    Encoder.compactJSONLD = compactJSONLD;
+    ;
+    function expandJSONLD(context) {
+        return {
+            encode: (data) => __awaiter(this, void 0, void 0, function* () {
+                return yield _1.JSONLD.expand(data, context);
+            }),
+            decode: (encoded) => __awaiter(this, void 0, void 0, function* () {
+                return yield _1.JSONLD.compact(encoded, context);
+            })
+        };
+    }
+    Encoder.expandJSONLD = expandJSONLD;
+    ;
     function invert(encoder) {
         function encode(data) {
             return __awaiter(this, void 0, void 0, function* () {

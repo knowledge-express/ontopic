@@ -54,7 +54,7 @@ export module Observable {
   }
 
   export function map<T, U>(observable: Observable<T>, mapFn: (value: T) => U | Promise<U>): Observable<U> {
-    return create(subject => {
+    return create<U>(subject => {
       observable.subscribe({
         onNext: value => Promise.resolve(mapFn(value)).then(subject.onNext)
       });
@@ -62,15 +62,26 @@ export module Observable {
   }
 
   export function filter<T>(observable: Observable<T>, filterFn: (value: T) => boolean | Promise<boolean>): Observable<T>  {
-    return create(subject => {
+    return create<T>(subject => {
       observable.subscribe({
         onNext: value => Promise.resolve(filterFn(value)).then(result => result ? subject.onNext(value) : undefined)
       });
     });
   }
 
+  export function flatten<T>(observable: Observable<T[]>): Observable<T> {
+    return create<T>(subject => {
+      observable.subscribe({
+        onNext: async values => values.reduce(async (memo, value) => {
+          await memo;
+          return subject.onNext(value);
+        }, Promise.resolve())
+      })
+    });
+  }
+
   export function scan<T, U>(observable: Observable<T>, scanFn: (memo: U, value: T) => U | Promise<U>, memo: U): Observable<U> {
-    return create(subject => {
+    return create<U>(subject => {
       observable.subscribe({
         onNext: value => Promise.resolve(scanFn(memo, value)).then(value => { memo = value; return subject.onNext(value) })
       });
@@ -83,7 +94,7 @@ export module Observable {
     });
   }
   export function fromPromise<T>(promise: Promise<T>) {
-    return create(subject => {
+    return create<T>(subject => {
       promise.then(subject.onNext).then(subject.onComplete);
     });
   }

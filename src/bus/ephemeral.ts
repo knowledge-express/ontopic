@@ -1,18 +1,28 @@
-import { Quad } from '../data';
-import { MutableBus, Mutation } from '.';
+import { MutableBus } from '.';
 
 import { Observable, Observer, Subject } from './observable';
 
-// export function create(updater?: (subject: Subject<Mutation<Quad[]>>) => void): MutableBus<Quad[]>;
-export function create<V>(updater?: (subject: Subject<Mutation<V>>) => void): MutableBus<V> {
+export function create<V>(updater?: (subject: Subject<V>) => void): MutableBus<V> {
   const observable = Observable.create(updater);
-  const subject = Subject.create<Mutation<V>>();
+  const subject = Subject.create<V>();
 
   return {
     observable,
     subject
   };
 };
+
+// This function is useless atm
+// export function fromArray<V>(values: V[]): MutableBus<V> {
+//   return create<V>(async subject => {
+//     await values.reduce(async (memo, value) => {
+//       await memo;
+//       return subject.onNext(value);
+//     }, Promise.resolve());
+//
+//     subject.onComplete();
+//   });
+// };
 
 export default {
   create

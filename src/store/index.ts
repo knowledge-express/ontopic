@@ -62,9 +62,13 @@ export function readOnly<V>(store: Store<V>): ReadableStore<V> {
 //   };
 // };
 
-export function encode<V, W>(store: MutableStore<V>, encoder: Encoder<W, V>): MutableStore<W> {
+export function encode<V, W>(store: MutableStore<V>, encoder: Encoder<V, W>): MutableStore<W>;
+export function encode<V, W>(store: ReadableStore<V>, encoder: Encoder<V, W>): ReadableStore<W>;
+export function encode<V, W>(store: Store<V>, encoder: Encoder<V, W>): Store<W> {
   async function query(query: Query): Promise<W> {
-    return null;
+    const result = await store.query(query);
+    const encoded = encoder.encode(result);
+    return encoded;
   }
 
   async function filter(): Promise<W[]> {
@@ -75,16 +79,18 @@ export function encode<V, W>(store: MutableStore<V>, encoder: Encoder<W, V>): Mu
     return null;
   }
 
-  async function add(data: W): Promise<W> {
-    const encoded = await encoder.encode(data);
-    const decoded = await encoder.decode(await store.add(encoded));
-    return decoded;
+  if (!isMutableStore<V>(store)) return { query, filter, getValues };
+
+  const add = async (data: W): Promise<W> => {
+    const decoded = await encoder.decode(data);
+    const encoded = await encoder.encode(await store.add(decoded));
+    return encoded;
   }
 
-  async function remove(data: W): Promise<W> {
-    const encoded = await encoder.encode(data);
-    const decoded = await encoder.decode(await store.remove(encoded));
-    return decoded;
+  const remove = async (data: W): Promise<W> => {
+    const decoded = await encoder.decode(data);
+    const encoded = await encoder.encode(await store.remove(decoded));
+    return encoded;
   }
 
   return {
