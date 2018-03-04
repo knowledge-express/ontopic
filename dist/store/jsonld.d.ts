@@ -12,9 +12,9 @@ export declare function query(graph: Graph, query: Query): Promise<any>;
 export declare function add(graph: Graph, data: JSONLD.Document): JSONLD.Document;
 export declare function remove(graph: Graph, data: JSONLD.Document): JSONLD.Document;
 declare const _default: {
-    create: typeof create;
-    query: typeof query;
-    add: typeof add;
-    remove: typeof remove;
+    create: () => MutableStore<JSONLD.Document>;
+    query: (graph: Graph, query: object) => Promise<any>;
+    add: (graph: Graph, data: JSONLD.Document) => JSONLD.Document;
+    remove: (graph: Graph, data: JSONLD.Document) => JSONLD.Document;
 };
 export default _default;

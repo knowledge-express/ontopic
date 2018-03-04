@@ -17,7 +17,7 @@ export declare module JSONLD {
     })[];
     type Frame = Document;
     function compare(a: Document, b: Document, context?: Context): Promise<number>;
-    function isComplete(doc: Document, requiredIds: Quad.IRI[]): boolean;
+    function isComplete(doc: Document, requiredIds?: Quad.IRI[]): boolean;
     function hasDefinedValues(token: string | object): boolean;
     function ids(doc: Document): Quad.IRI[];
     function toQuads(doc: Document): Promise<Quad[]>;

@@ -53,6 +53,19 @@ function map(bus, mapFn) {
 }
 exports.map = map;
 ;
+function filter(bus, filterFn) {
+    const filteredUpdates = observable_1.Observable.filter(bus.observable, filterFn);
+    if (!isMutableBus(bus))
+        return { observable: filteredUpdates };
+    const filteredUpdateRequests = observable_1.Subject.create();
+    observable_1.Observable.filter(bus.subject, filterFn).subscribe(filteredUpdateRequests);
+    return {
+        observable: filteredUpdates,
+        subject: filteredUpdateRequests
+    };
+}
+exports.filter = filter;
+;
 function flatten(bus) {
     const flattenedUpdates = observable_1.Observable.flatten(bus.observable);
     if (!isMutableBus(bus))
@@ -66,12 +79,24 @@ function flatten(bus) {
 }
 exports.flatten = flatten;
 ;
+function zip(bus, other) {
+    const zippedUpdates = observable_1.Observable.zip(bus.observable, other.observable);
+    if (!(isMutableBus(bus) && isMutableBus(other)))
+        return { observable: zippedUpdates };
+    const zippedUpdateRequests = observable_1.Subject.create();
+    observable_1.Observable.zip(bus.subject, other.subject).subscribe(zippedUpdateRequests);
+    return {
+        observable: zippedUpdates,
+        subject: zippedUpdateRequests
+    };
+}
+exports.zip = zip;
 function encode(bus, encoder) {
     return map(bus, (mutation) => __awaiter(this, void 0, void 0, function* () { return data_1.Mutation.map(mutation, encoder.encode); }));
 }
 exports.encode = encode;
 ;
-function frame(bus, frame) {
+function frame(bus, frame, validator = data_1.JSONLD.hasDefinedValues) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('Expanding frame');
         const expanded = yield jsonld_1.promises.expand(frame);
@@ -94,32 +119,21 @@ function frame(bus, frame) {
         });
         console.log('Creating cache');
         const cache = JSONLDStore.create();
-        const idsByDocId = {};
         const framed = observable_1.Observable.map(filtered, (mutation) => __awaiter(this, void 0, void 0, function* () {
             const { action, data } = mutation;
             console.log('Applying mutation to cache:', action, data);
             const result = yield cache[action](data);
-            const docIds = data_1.JSONLD.ids(result);
-            const docId = result["@id"];
-            idsByDocId[docId] = docIds;
             const framed = yield cache.query(frame);
-            return { action, data: framed };
+            return [framed, mutation];
         }));
-        const completed = observable_1.Observable.filter(framed, mutation => {
-            const { data } = mutation;
-            const framedIds = data_1.JSONLD.ids(data);
-            const requiredIds = framedIds.reduce((memo, id) => {
-                const docIds = idsByDocId[id];
-                return [...memo, ...docIds];
-            }, []);
-            const result = data_1.JSONLD.isComplete(data, []);
-            console.log('Filtering on completeness:', result, mutation);
+        const validated = observable_1.Observable.filter(framed, ([framed, mutation]) => __awaiter(this, void 0, void 0, function* () {
+            const result = yield validator(framed, mutation);
+            console.log('Filtering on validation:', result, mutation);
             return result;
-        });
-        const removedFromCache = observable_1.Observable.map(completed, (mutation) => __awaiter(this, void 0, void 0, function* () {
-            const { action, data } = mutation;
-            yield cache.remove(data);
-            return mutation;
+        }));
+        const removedFromCache = observable_1.Observable.map(validated, ([framed, mutation]) => __awaiter(this, void 0, void 0, function* () {
+            yield cache.remove(framed);
+            return Object.assign({}, mutation, { data: framed });
         }));
         removedFromCache.subscribe(framedUpdates);
         return { observable: framedUpdates };

@@ -26,7 +26,7 @@ var JSONLD;
         });
     }
     JSONLD.compare = compare;
-    function isComplete(doc, requiredIds) {
+    function isComplete(doc, requiredIds = []) {
         console.log('Checking completeness of doc against:', requiredIds);
         if (!hasDefinedValues(doc))
             return false;

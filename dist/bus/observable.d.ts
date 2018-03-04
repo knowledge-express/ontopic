@@ -23,6 +23,7 @@ export declare module Observable {
     function map<T, U>(observable: Observable<T>, mapFn: (value: T) => U | Promise<U>): Observable<U>;
     function filter<T>(observable: Observable<T>, filterFn: (value: T) => boolean | Promise<boolean>): Observable<T>;
     function flatten<T>(observable: Observable<T[]>): Observable<T>;
+    function zip<V, W>(observable: Observable<V>, other: Observable<W>): Observable<[V, W]>;
     function scan<T, U>(observable: Observable<T>, scanFn: (memo: U, value: T) => U | Promise<U>, memo: U): Observable<U>;
     function forEach<T>(observable: Observable<T>, fn: (value: T) => void | Promise<void>): Disposable;
     function fromPromise<T>(promise: Promise<T>): {

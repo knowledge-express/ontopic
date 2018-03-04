@@ -73,6 +73,56 @@ var Observable;
         });
     }
     Observable.flatten = flatten;
+    ;
+    function zip(observable, other) {
+        return create(subject => {
+            let nextPromise;
+            let completePromise;
+            observable.subscribe({
+                onNext: (value) => __awaiter(this, void 0, void 0, function* () {
+                    if (!nextPromise) {
+                        nextPromise = Promise.resolve(value);
+                        return;
+                    }
+                    const otherValue = yield nextPromise;
+                    yield subject.onNext([value, otherValue]);
+                    return;
+                }),
+                onError: subject.onError,
+                onComplete: (result) => __awaiter(this, void 0, void 0, function* () {
+                    if (!completePromise) {
+                        completePromise = Promise.resolve(result);
+                        return;
+                    }
+                    const otherResult = yield completePromise;
+                    yield subject.onComplete([result, otherResult]);
+                    return;
+                })
+            });
+            other.subscribe({
+                onNext: (value) => __awaiter(this, void 0, void 0, function* () {
+                    if (!nextPromise) {
+                        nextPromise = Promise.resolve(value);
+                        return;
+                    }
+                    const otherValue = yield nextPromise;
+                    yield subject.onNext([otherValue, value]);
+                    return;
+                }),
+                onError: subject.onError,
+                onComplete: (result) => __awaiter(this, void 0, void 0, function* () {
+                    if (!completePromise) {
+                        completePromise = Promise.resolve(result);
+                        return;
+                    }
+                    const otherResult = yield completePromise;
+                    yield subject.onComplete([otherResult, result]);
+                    return;
+                })
+            });
+        });
+    }
+    Observable.zip = zip;
     function scan(observable, scanFn, memo) {
         return create(subject => {
             observable.subscribe({

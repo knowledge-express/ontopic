@@ -78,7 +78,57 @@ export module Observable {
         }, Promise.resolve())
       })
     });
-  }
+  };
+
+export function zip<V, W>(observable: Observable<V>, other: Observable<W>): Observable<[V, W]> {
+  return create<[V, W]>(subject => {
+    let nextPromise;
+    let completePromise;
+    observable.subscribe({
+      onNext: async value => {
+        if (!nextPromise) {
+          nextPromise = Promise.resolve(value);
+          return;
+        }
+        const otherValue = await nextPromise;
+        await subject.onNext([ value, otherValue ]);
+        return;
+      },
+      onError: subject.onError,
+      onComplete: async result => {
+        if (!completePromise) {
+          completePromise = Promise.resolve(result);
+          return;
+        }
+        const otherResult = await completePromise;
+        await subject.onComplete([ result, otherResult ]);
+        return;
+      }
+    });
+
+    other.subscribe({
+      onNext: async value => {
+        if (!nextPromise) {
+          nextPromise = Promise.resolve(value);
+          return;
+        }
+        const otherValue = await nextPromise;
+        await subject.onNext([ otherValue, value ]);
+        return;
+      },
+      onError: subject.onError,
+      onComplete: async result => {
+        if (!completePromise) {
+          completePromise = Promise.resolve(result);
+          return;
+        }
+        const otherResult = await completePromise;
+        await subject.onComplete([ otherResult, result ]);
+        return;
+      }
+    });
+  });
+}
 
   export function scan<T, U>(observable: Observable<T>, scanFn: (memo: U, value: T) => U | Promise<U>, memo: U): Observable<U> {
     return create<U>(subject => {

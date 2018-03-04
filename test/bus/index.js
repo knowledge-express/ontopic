@@ -1,5 +1,6 @@
 import test from 'ava';
 import * as Bus from '../../dist/bus';
+import JSONLD from '../../dist/data/jsonld';
 
 const videoFlattenedExpanded = require('../support/video-flattened-expanded');
 const complexFrame = {
@@ -91,7 +92,7 @@ test('Bus.frame: it frames', async t => {
     onError: error => _reject(error)
   });
 
-  await docs.reduce(async (memo, value) => {
+  await docs.reverse().reduce(async (memo, value) => {
     await memo;
     console.log('Sending mutation!');
     return updates.onNext({ action: 'add', data: value });
@@ -113,7 +114,16 @@ test('Bus.frame: it frames complex things', async t => {
 
   const updates = Bus.Subject.create();
   const bus = Bus.EphemeralBus.create((subject) => updates.subscribe(subject));
-  const framedBus = await Bus.frame(bus, complexFrame);
+  // const captionIds = complexFramed["https://knowledge.express/caption"].map(c => c["@id"]);
+  let captionIds;
+  const validator = async (doc, mutation) => {
+    if ([].concat(mutation.data["@type"]).indexOf("https://knowledge.express/Resource") !== -1) {
+      captionIds = mutation.data["https://knowledge.express/caption"].map(c => c["@id"]);
+    }
+    if (!captionIds) return false;
+    return JSONLD.isComplete(doc, captionIds);
+  };
+  const framedBus = await Bus.frame(bus, complexFrame, validator);
   console.log(framedBus);
 
   framedBus.observable.subscribe({
@@ -121,7 +131,7 @@ test('Bus.frame: it frames complex things', async t => {
     onError: error => _reject(error)
   });
 
-  await videoFlattenedExpanded.reduce(async (memo, value) => {
+  await videoFlattenedExpanded.reverse().reduce(async (memo, value) => {
     await memo;
     console.log('Sending mutation!');
     return updates.onNext({ action: 'add', data: value });

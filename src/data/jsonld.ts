@@ -38,7 +38,7 @@ export module JSONLD {
     return nquadsA.localeCompare(nquadsB);
   }
 
-  export function isComplete(doc: Document, requiredIds: Quad.IRI[]): boolean {
+  export function isComplete(doc: Document, requiredIds: Quad.IRI[] = []): boolean {
     console.log('Checking completeness of doc against:', requiredIds);
     if (!hasDefinedValues(doc)) return false;
     const docIds = ids(doc);

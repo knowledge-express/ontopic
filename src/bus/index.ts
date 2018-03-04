@@ -55,6 +55,19 @@ export function map<V, W>(bus: Bus<V>, mapFn: (v: V) => W | Promise<W>): Bus<W> 
   };
 };
 
+export function filter<V>(bus: Bus<V>, filterFn: (v: V) => boolean | Promise<boolean>): Bus<V> {
+  const filteredUpdates = Observable.filter(bus.observable, filterFn);
+  if (!isMutableBus(bus)) return { observable: filteredUpdates };
+
+  const filteredUpdateRequests = Subject.create<V>();
+  Observable.filter(bus.subject, filterFn).subscribe(filteredUpdateRequests);
+
+  return {
+    observable: filteredUpdates,
+    subject: filteredUpdateRequests
+  };
+};
+
 export function flatten<V>(bus: Bus<V[]>): Bus<V> {
   const flattenedUpdates = Observable.flatten(bus.observable);
   if (!isMutableBus(bus)) return { observable: flattenedUpdates };
@@ -69,23 +82,23 @@ export function flatten<V>(bus: Bus<V[]>): Bus<V> {
   };
 };
 
+export function zip<V,W>(bus: Bus<V>, other: Bus<W>): Bus<[V, W]> {
+  const zippedUpdates = Observable.zip(bus.observable, other.observable);
+  if (!(isMutableBus(bus) && isMutableBus(other))) return { observable: zippedUpdates };
+  const zippedUpdateRequests = Subject.create<[V, W]>();
+  Observable.zip(bus.subject, other.subject).subscribe(zippedUpdateRequests);
+  return {
+    observable: zippedUpdates,
+    subject: zippedUpdateRequests
+  };
+}
+
 export function encode<V, W>(bus: Bus<Mutation<V>>, encoder: Encoder<V, W>): Bus<Mutation<W>> {
   return map(bus, async mutation => Mutation.map(mutation, encoder.encode));
-  // const encodedUpdates = Observable.map(bus.observable, mapMutation);
-  //
-  // if (!isMutableBus(bus)) return { observable: encodedUpdates };
-  //
-  // const encodedUpdateRequests = Subject.create<Mutation<W>>();
-  // Observable.map(bus.subject, mapMutation).subscribe(encodedUpdateRequests);
-  //
-  // return {
-  //   observable: encodedUpdates,
-  //   subject: encodedUpdateRequests
-  // }
 };
 
 // TODO: Figure out what to do with updateRequests
-export async function frame(bus: Bus<Mutation<JSONLD.Document>>, frame: JSONLD.Frame): Promise<ReadableBus<Mutation<JSONLD.Document>>> {
+export async function frame(bus: Bus<Mutation<JSONLD.Document>>, frame: JSONLD.Frame, validator: (framed: JSONLD.Document, mutation?: Mutation<JSONLD.Document>) => boolean | Promise<boolean> = JSONLD.hasDefinedValues): Promise<ReadableBus<Mutation<JSONLD.Document>>> {
   console.log('Expanding frame');
   const expanded = await jsonld.expand(frame);
   console.log('Flattening frame');
@@ -113,7 +126,8 @@ export async function frame(bus: Bus<Mutation<JSONLD.Document>>, frame: JSONLD.F
 
   console.log('Creating cache');
   const cache = JSONLDStore.create();
-  const idsByDocId = {};
+  // const idsByDocId = {};
+
   const framed = Observable.map(filtered, async (mutation) => {
     const { action, data } = mutation;
     console.log('Applying mutation to cache:', action, data);
@@ -121,37 +135,34 @@ export async function frame(bus: Bus<Mutation<JSONLD.Document>>, frame: JSONLD.F
 
     // Apply mutation to cache
     const result = await cache[action](data);
-    const docIds = JSONLD.ids(result);
-    const docId = result["@id"];
-    idsByDocId[docId] = docIds;
+    // const docIds = JSONLD.ids(result);
+    // const docId = result["@id"];
+    // idsByDocId[docId] = docIds;
 
     const framed = await cache.query(frame);
-    return { action, data: framed };
+    return <[ JSONLD.Document, Mutation<JSONLD.Document> ]>[ framed, mutation ];
   });
 
   // const flattened = Observable.flatten(framed);
 
   // Filter by completion
-  const completed = Observable.filter(framed, mutation => {
-    const { data } = mutation
-    const framedIds = JSONLD.ids(data);
-    const requiredIds = framedIds.reduce((memo, id) => {
-      const docIds = idsByDocId[id];
-      return [ ...memo, ...docIds ];
-    }, []);
-    const result = JSONLD.isComplete(data, []);
-    console.log('Filtering on completeness:', result, mutation);
+  const validated = Observable.filter(framed, async ([ framed, mutation ]) => {
+    // const framedIds = JSONLD.ids(data);
+    // const requiredIds = framedIds.reduce((memo, id) => {
+    //   const docIds = idsByDocId[id];
+    //   return [ ...memo, ...docIds ];
+    // }, []);
+    // const result = JSONLD.isComplete(data, []);
+    const result = await validator(framed, mutation);
+    console.log('Filtering on validation:', result, mutation);
     return result;
   });
 
   // Clean up the cache
-  const removedFromCache = Observable.map(completed, async mutation => {
-    const { action, data } = mutation
-
+  const removedFromCache = Observable.map(validated, async ([ framed, mutation ]) => {
     // Removed complete frame from cache
-    await cache.remove(data);
-
-    return mutation;
+    await cache.remove(framed);
+    return { ...mutation, data: framed };
   });
 
     // console.log('Subscribing.');

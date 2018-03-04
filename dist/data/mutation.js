@@ -17,17 +17,14 @@ var Mutation;
             'data' in obj;
     }
     Mutation.isMutation = isMutation;
-    ;
     function add(data) {
         return { action: 'add', data };
     }
     Mutation.add = add;
-    ;
     function remove(data) {
         return { action: 'remove', data };
     }
     Mutation.remove = remove;
-    ;
     function apply(mutation, store) {
         return __awaiter(this, void 0, void 0, function* () {
             const { action, data } = mutation;
