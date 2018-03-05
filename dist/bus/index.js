@@ -11,10 +11,8 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsonld_1 = require("jsonld");
 const observable_1 = require("./observable");
 const data_1 = require("../data");
-const JSONLDStore = require("../store/jsonld");
 const EphemeralBus = require("./ephemeral");
 exports.EphemeralBus = EphemeralBus;
 __export(require("./observable"));
@@ -95,49 +93,4 @@ function encode(bus, encoder) {
     return map(bus, (mutation) => __awaiter(this, void 0, void 0, function* () { return data_1.Mutation.map(mutation, encoder.encode); }));
 }
 exports.encode = encode;
-;
-function frame(bus, frame, validator = data_1.JSONLD.hasDefinedValues) {
-    return __awaiter(this, void 0, void 0, function* () {
-        console.log('Expanding frame');
-        const expanded = yield jsonld_1.promises.expand(frame);
-        console.log('Flattening frame');
-        const flattened = yield jsonld_1.promises.flatten(expanded);
-        console.log('Building type index');
-        const typeIndex = flattened.reduce((memo, frame) => {
-            const types = [].concat(frame["@type"] || []);
-            return types.reduce((memo, type) => (Object.assign({}, memo, { [type]: frame })), memo);
-        }, {});
-        const framedUpdates = observable_1.Subject.create();
-        console.log('Filtering by types:', Object.keys(typeIndex));
-        const filtered = observable_1.Observable.filter(bus.observable, mutation => {
-            console.log('Filtering mutation based on types.');
-            const { data } = mutation;
-            const types = [].concat(data["@type"] || []);
-            const hasType = types.reduce((memo, type) => memo || type in typeIndex, false);
-            console.log('Has type?', hasType);
-            return hasType;
-        });
-        console.log('Creating cache');
-        const cache = JSONLDStore.create();
-        const framed = observable_1.Observable.map(filtered, (mutation) => __awaiter(this, void 0, void 0, function* () {
-            const { action, data } = mutation;
-            console.log('Applying mutation to cache:', action, data);
-            const result = yield cache[action](data);
-            const framed = yield cache.query(frame);
-            return [framed, mutation];
-        }));
-        const validated = observable_1.Observable.filter(framed, ([framed, mutation]) => __awaiter(this, void 0, void 0, function* () {
-            const result = yield validator(framed, mutation);
-            console.log('Filtering on validation:', result, mutation);
-            return result;
-        }));
-        const removedFromCache = observable_1.Observable.map(validated, ([framed, mutation]) => __awaiter(this, void 0, void 0, function* () {
-            yield cache.remove(framed);
-            return Object.assign({}, mutation, { data: framed });
-        }));
-        removedFromCache.subscribe(framedUpdates);
-        return { observable: framedUpdates };
-    });
-}
-exports.frame = frame;
 ;

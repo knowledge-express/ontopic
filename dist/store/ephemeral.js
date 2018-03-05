@@ -9,53 +9,52 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const rdf = require("rdf");
-const jsonld_1 = require("jsonld");
-const data_1 = require("../data");
-function create() {
-    const graph = new rdf.Graph;
-    return {
-        add: (data) => add(graph, data),
-        remove: (data) => remove(graph, data),
-        query: (q) => query(graph, q),
-        getValues: null,
-        filter: null,
-    };
-}
-exports.create = create;
+var EphemeralStore;
+(function (EphemeralStore) {
+    function create() {
+        const graph = new rdf.Graph;
+        const store = {
+            graph,
+            getPropertyValue: (id, property) => __awaiter(this, void 0, void 0, function* () { return getPropertyValue(store, id, property); }),
+            findBy: () => __awaiter(this, void 0, void 0, function* () { return findBy(store); }),
+            add: (data) => add(store, data),
+            remove: (data) => remove(store, data),
+        };
+        return store;
+    }
+    EphemeralStore.create = create;
+    ;
+    function getPropertyValue(store, id, property) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const objects = store.graph.match(id, property, null).map(t => t.object);
+            return objects.length === 1 ? objects[0] : objects.length ? objects : null;
+        });
+    }
+    EphemeralStore.getPropertyValue = getPropertyValue;
+    function findBy(store) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return null;
+        });
+    }
+    EphemeralStore.findBy = findBy;
+    function add(store, data) {
+        return data.map(quad => {
+            const { subject, predicate, object } = quad;
+            store.graph.add(rdf.environment.createTriple(subject, predicate, object));
+            return quad;
+        });
+    }
+    EphemeralStore.add = add;
+    ;
+    function remove(store, data) {
+        return data.map(quad => {
+            const { subject, predicate, object } = quad;
+            store.graph.remove(rdf.environment.createTriple(subject, predicate, object));
+            return quad;
+        });
+    }
+    EphemeralStore.remove = remove;
+    ;
+})(EphemeralStore = exports.EphemeralStore || (exports.EphemeralStore = {}));
 ;
-function query(graph, query) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const quads = graph.toArray();
-        const nquads = data_1.Quad.toNQuads(quads);
-        const doc = yield jsonld_1.promises.fromRDF(nquads);
-        const framed = yield jsonld_1.promises.frame(doc, query);
-        const resultNQuads = yield jsonld_1.promises.toRDF(framed, { format: 'application/nquads' });
-        const resultQuads = data_1.Quad.fromNQuads(resultNQuads).reverse();
-        return resultQuads.map(({ subject, predicate, object }) => ({ subject, predicate, object }));
-    });
-}
-exports.query = query;
-function add(graph, data) {
-    return data.map(quad => {
-        const { subject, predicate, object } = quad;
-        graph.add(rdf.environment.createTriple(subject, predicate, object));
-        return quad;
-    });
-}
-exports.add = add;
-;
-function remove(graph, data) {
-    return data.map(quad => {
-        const { subject, predicate, object } = quad;
-        graph.remove(rdf.environment.createTriple(subject, predicate, object));
-        return quad;
-    });
-}
-exports.remove = remove;
-;
-exports.default = {
-    create,
-    query,
-    add,
-    remove
-};
+exports.default = EphemeralStore;

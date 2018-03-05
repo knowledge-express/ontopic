@@ -17,7 +17,7 @@ exports.Bus = Bus;
 const Store = require("./store");
 exports.Store = Store;
 const EphemeralBus = require("./bus/ephemeral");
-const EphemeralStore = require("./store/ephemeral");
+const ephemeral_1 = require("./store/ephemeral");
 const observable_1 = require("./bus/observable");
 function ontopic(config = config_1.default.Default) {
     return ontopic.fromConfig(config);
@@ -31,7 +31,7 @@ exports.ontopic = ontopic;
     ontopic.fromConfig = fromConfig;
     ;
     function create(encoder) {
-        const store = EphemeralStore.create();
+        const store = ephemeral_1.default.create();
         const bus = EphemeralBus.create();
         const encoded = Store.encode(store, encoder);
         return connect(encoded, bus);
@@ -49,18 +49,13 @@ exports.ontopic = ontopic;
         }
         function remove(data) {
             return __awaiter(this, void 0, void 0, function* () {
-                const result = yield store.add(data);
-                storeUpdates.onNext({ action: 'add', data: result });
+                const result = yield store.remove(data);
+                storeUpdates.onNext({ action: 'remove', data: result });
                 return result;
             });
         }
-        const newStore = {
-            query: store.query,
-            filter: store.filter,
-            getValues: store.getValues,
-            add,
-            remove,
-        };
+        const newStore = Object.assign({}, Store.readOnly(store), { add,
+            remove });
         const busUpdates = observable_1.Subject.create();
         const newBus = EphemeralBus.create((subject) => {
             storeUpdates.subscribe(subject);

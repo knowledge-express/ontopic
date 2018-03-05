@@ -1,5 +1,5 @@
 import { Observable, Subject } from './observable';
-import { Encoder, Mutation, JSONLD } from '../data';
+import { Encoder, Mutation } from '../data';
 import * as EphemeralBus from './ephemeral';
 export * from './observable';
 export { EphemeralBus };
@@ -19,5 +19,4 @@ export declare function filter<V>(bus: Bus<V>, filterFn: (v: V) => boolean | Pro
 export declare function flatten<V>(bus: Bus<V[]>): Bus<V>;
 export declare function zip<V, W>(bus: Bus<V>, other: Bus<W>): Bus<[V, W]>;
 export declare function encode<V, W>(bus: Bus<Mutation<V>>, encoder: Encoder<V, W>): Bus<Mutation<W>>;
-export declare function frame(bus: Bus<Mutation<JSONLD.Document>>, frame: JSONLD.Frame, validator?: (framed: JSONLD.Document, mutation?: Mutation<JSONLD.Document>) => boolean | Promise<boolean>): Promise<ReadableBus<Mutation<JSONLD.Document>>>;
 export default Bus;

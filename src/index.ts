@@ -8,7 +8,7 @@ import * as Store from './store';
 import * as Data from './data';
 
 import * as EphemeralBus from './bus/ephemeral';
-import * as EphemeralStore from './store/ephemeral';
+import EphemeralStore from './store/ephemeral';
 
 import { Observable, Subject } from './bus/observable';
 
@@ -53,15 +53,13 @@ export module ontopic {
     }
 
     async function remove(data) {
-      const result = await store.add(data);
-      storeUpdates.onNext({ action: 'add', data: result });
+      const result = await store.remove(data);
+      storeUpdates.onNext({ action: 'remove', data: result });
       return result;
     }
 
     const newStore: Store.MutableStore<V> = {
-      query: store.query,
-      filter: store.filter,
-      getValues: store.getValues,
+      ...Store.readOnly(store),
       add,
       remove,
     };

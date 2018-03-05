@@ -81,6 +81,10 @@
   dependencies:
     "@types/glob" "*"
 
+"@types/graphql@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.8.6.tgz#b34fb880493ba835b0c067024ee70130d6f9bb68"
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -1928,6 +1932,12 @@ graceful-fs@~1:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-1.2.3.tgz#15a4806a57547cb2d2dbf27f42e89a8c3451b364"
 
+graphql@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.13.1.tgz#9b3db3d8e40d1827e4172404bfdd2e4e17a58b55"
+  dependencies:
+    iterall "^1.2.0"
+
 handlebars@^4.0.3:
   version "4.0.11"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.0.11.tgz#630a35dfe0294bc281edae6ffc5d329fc7982dcc"
@@ -2463,6 +2473,10 @@ isuri@^2.0.3:
   dependencies:
     rfc-3986 "1.0.1"
 
+iterall@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
+
 js-string-escape@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/js-string-escape/-/js-string-escape-1.0.1.tgz#e2625badbc0d67c7533e9edc1068c587ae4137ef"
@@ -2863,6 +2877,10 @@ multimatch@^2.1.0:
     array-union "^1.0.1"
     arrify "^1.0.0"
     minimatch "^3.0.0"
+
+n3@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/n3/-/n3-0.10.0.tgz#75fd10f0876cdd1749fc859181f26671467d4d63"
 
 n3@^0.11.2:
   version "0.11.2"
@@ -3650,6 +3668,12 @@ rimraf@~2.1.4:
 safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
+
+semantic-graphql@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/semantic-graphql/-/semantic-graphql-0.6.2.tgz#1b0b65d2d4f192ed631a2846ff4d1c1569e9edc5"
+  dependencies:
+    n3 "^0.10.0"
 
 semantic-toolkit@^0.2.1:
   version "0.2.1"

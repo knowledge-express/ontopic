@@ -1,13 +1,17 @@
 import { Quad } from './data';
-import Store from './store';
-export declare type Ontology = {
-    store: Store<any>;
+import EphemeralStore from './store/ephemeral';
+export declare type Graph = {
+    match(subject?: string, predicate?: string, object?: string): Quad[];
+    add(triple: object): void;
+    remove(triple: object): void;
+    toArray(): Quad[];
 };
+export declare type Ontology = EphemeralStore & {};
 export declare module Ontology {
     function classes(ontology: Ontology): Promise<string[]>;
-    function fromQuads(quads: Quad[]): Promise<Ontology>;
-    function toQuads(ontology: Ontology): Promise<Quad[]>;
-    function fromNQuads(str: string): Promise<Ontology>;
-    function toNQuads(ontology: Ontology): Promise<string>;
+    function fromQuads(quads: Quad[]): Ontology;
+    function toQuads(ontology: Ontology): Quad[];
+    function fromNQuads(str: string): Ontology;
+    function toNQuads(ontology: Ontology): string;
 }
 export default Ontology;

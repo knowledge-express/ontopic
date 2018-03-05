@@ -2,16 +2,23 @@ import * as n3 from 'n3';
 import * as rdfTools from 'rdf-tools';
 
 import { Quad } from './data';
-import Store from './store';
-import * as EphemeralStore from './store/ephemeral';
+import { MutableStore } from './store';
+import EphemeralStore from './store/ephemeral';
 
-export type Ontology = {
-  store: Store<any>
+export type Graph = {
+  match(subject?: string, predicate?: string, object?: string): Quad[]
+  add(triple: object): void
+  remove(triple: object): void
+  toArray(): Quad[]
+};
+
+export type Ontology = EphemeralStore & {
+
 };
 
 export module Ontology {
   export async function classes(ontology: Ontology): Promise<string[]> {
-    const turtle = await toNQuads(ontology);
+    const turtle = toNQuads(ontology);
     // TODO: Remove dependency on rdf-tools for this. Might still be used for other things
     const { classes } = await rdfTools.getClasses(turtle)
     const iris = Object.keys(classes.reduce((memo, c) => {
@@ -21,27 +28,27 @@ export module Ontology {
     return iris;
   };
 
-  export async function fromQuads(quads: Quad[]): Promise<Ontology> {
-    const store = EphemeralStore.create();
-    await store.add(quads);
+  export function fromQuads(quads: Quad[]): Ontology {
+    const ontology = EphemeralStore.create();
 
-    return {
-      store
-    };
+    ontology.add(quads);
+
+    return ontology;
   };
 
-  export async function toQuads(ontology: Ontology): Promise<Quad[]> {
-    return ontology.store.query({});
+  export function toQuads(ontology: Ontology): Quad[] {
+    const quads = ontology.graph.toArray();
+    return quads;
   };
 
-  export async function fromNQuads(str: string): Promise<Ontology> {
+  export function fromNQuads(str: string): Ontology {
     const parser = n3.Parser();
     const triples: Array<n3.Triple> = <any>parser.parse(str, null); // Explicitly pass null as a callback to satisfy the types
     return fromQuads(triples);
   };
 
-  export async function toNQuads(ontology: Ontology): Promise<string> {
-    const quads = await toQuads(ontology);
+  export function toNQuads(ontology: Ontology): string {
+    const quads = toQuads(ontology);
     const nquads = Quad.toNQuads(quads);
     return nquads;
   };

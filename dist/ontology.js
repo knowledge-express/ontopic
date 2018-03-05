@@ -11,12 +11,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const n3 = require("n3");
 const rdfTools = require("rdf-tools");
 const data_1 = require("./data");
-const EphemeralStore = require("./store/ephemeral");
+const ephemeral_1 = require("./store/ephemeral");
 var Ontology;
 (function (Ontology) {
     function classes(ontology) {
         return __awaiter(this, void 0, void 0, function* () {
-            const turtle = yield toNQuads(ontology);
+            const turtle = toNQuads(ontology);
             const { classes } = yield rdfTools.getClasses(turtle);
             const iris = Object.keys(classes.reduce((memo, c) => {
                 return [c.iri, ...c.subClasses, ...c.superClasses, ...memo];
@@ -27,38 +27,29 @@ var Ontology;
     Ontology.classes = classes;
     ;
     function fromQuads(quads) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const store = EphemeralStore.create();
-            yield store.add(quads);
-            return {
-                store
-            };
-        });
+        const ontology = ephemeral_1.default.create();
+        ontology.add(quads);
+        return ontology;
     }
     Ontology.fromQuads = fromQuads;
     ;
     function toQuads(ontology) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return ontology.store.query({});
-        });
+        const quads = ontology.graph.toArray();
+        return quads;
     }
     Ontology.toQuads = toQuads;
     ;
     function fromNQuads(str) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const parser = n3.Parser();
-            const triples = parser.parse(str, null);
-            return fromQuads(triples);
-        });
+        const parser = n3.Parser();
+        const triples = parser.parse(str, null);
+        return fromQuads(triples);
     }
     Ontology.fromNQuads = fromNQuads;
     ;
     function toNQuads(ontology) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const quads = yield toQuads(ontology);
-            const nquads = data_1.Quad.toNQuads(quads);
-            return nquads;
-        });
+        const quads = toQuads(ontology);
+        const nquads = data_1.Quad.toNQuads(quads);
+        return nquads;
     }
     Ontology.toNQuads = toNQuads;
     ;

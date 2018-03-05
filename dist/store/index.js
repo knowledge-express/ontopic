@@ -7,15 +7,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 const rdf = require('rdf');
+__export(require("./composite"));
 function isStore(obj) {
     return isReadableStore(obj) || isMutableStore(obj);
 }
 exports.isStore = isStore;
 ;
 function isReadableStore(store) {
-    return typeof store === 'object' && 'query' in store;
+    return typeof store === 'object' && 'getPropertyValue' in store && 'findBy' in store;
 }
 exports.isReadableStore = isReadableStore;
 ;
@@ -26,33 +30,15 @@ exports.isMutableStore = isMutableStore;
 ;
 function readOnly(store) {
     return {
-        query: store.query,
-        filter: store.filter,
-        getValues: store.getValues,
+        getPropertyValue: store.getPropertyValue,
+        findBy: store.findBy,
     };
 }
 exports.readOnly = readOnly;
 ;
 function encode(store, encoder) {
-    function query(query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield store.query(query);
-            const encoded = encoder.encode(result);
-            return encoded;
-        });
-    }
-    function filter() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return null;
-        });
-    }
-    function getValues() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return null;
-        });
-    }
     if (!isMutableStore(store))
-        return { query, filter, getValues };
+        return readOnly(store);
     const add = (data) => __awaiter(this, void 0, void 0, function* () {
         const decoded = yield encoder.decode(data);
         const encoded = yield encoder.encode(yield store.add(decoded));
@@ -63,13 +49,8 @@ function encode(store, encoder) {
         const encoded = yield encoder.encode(yield store.remove(decoded));
         return encoded;
     });
-    return {
-        query,
-        filter,
-        getValues,
-        add,
-        remove,
-    };
+    return Object.assign({}, readOnly(store), { add,
+        remove });
 }
 exports.encode = encode;
 ;
